@@ -1,0 +1,42 @@
+@import "../../common/lib/iconfont.wxss";
+@import "../../common/lib/weui.wxss";
+
+.flex-wrp{
+  margin-top: 10rpx;
+  display:flex;
+  flex-wrap: wrap;
+}
+.flex-item{
+  width: 100rpx;
+  font-size: 26rpx;
+  
+}
+.flex-item-V{
+  margin: 0 auto;
+  width: 300rpx;
+  height: 200rpx;
+}
+.bc_green{
+  background-color: #13CE66;
+}
+.bc_red{
+  background-color: #FF4949;
+}
+.bc_blue{
+  background-color: #20A0FF;
+}
+.bc_yellow{
+  background-color: #F7BA2A;
+}
+.line {
+    padding-top: 30rpx;
+}
+
+ button{
+   margin-top: 20rpx;
+  margin-bottom: 20rpx; 
+} 
+
+.page-section-body{
+  background-color: #fff;
+}

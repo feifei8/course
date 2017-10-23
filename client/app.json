@@ -1,0 +1,43 @@
+{
+    "pages": [
+        "pages/course/course",
+        "pages/index/index",
+        "pages/chat/chat",
+        "pages/subject/subject"
+        
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#333",
+        "navigationBarTitleText": "状元课程表",
+        "navigationBarTextStyle": "white"
+    },
+    "tabBar": {
+      "color": "#7A7E83",
+      "selectedColor": "#3cc51f",
+      "borderStyle": "black",
+      "backgroundColor": "#f5f5f5",
+      "list": [
+        {
+          "pagePath": "pages/course/course",
+          "iconPath": "images/icon_tab_course1.png",
+          "selectedIconPath": "images/icon_tab_course.png",
+          "text": "课程表"
+        },
+       
+        {
+          "pagePath": "pages/chat/chat",
+          "iconPath": "images/icon_tab_homework1.png",
+          "selectedIconPath": "images/icon_tab_homework.png",
+          "text": "作业"
+        },
+        {
+          "pagePath": "pages/index/index",
+          "iconPath": "images/icon_tab_mine1.png",
+          "selectedIconPath": "images/icon_tab_mine.png",
+          "text": "我的"
+        }
+
+      ]
+    }
+}

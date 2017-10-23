@@ -1,0 +1,33 @@
+{
+	"client": "./client",
+	"svr": "./server",
+	"appid": "wxea530f85f5422977",
+	"projectname": "%E7%8A%B6%E5%85%83%E8%AF%BE%E7%A8%8B%E8%A1%A8",
+	"condition": {
+		"weapp": {
+			"current": -1,
+			"list": [
+				{
+					"id": -1,
+					"name": "小程序分享卡片",
+					"pathName": "pages/course/course",
+					"query": "?opemod=1",
+					"scene": "1044",
+					"shareInfo": {
+						"groupName": "测试模拟群1",
+						"shareName": "n6JGJCr6UcBFSdqXbOSzwrXcmYQJh_jCxSHZK01Tgn4@cr4dev",
+						"shareKey": "eIPVLqgZuL6WfuMtPB94oDW6MtJVfAp7Nkn_xGxr5zW35SV-05FzVzqKyE-nWED-X1o0eI_cvrSafy5mA68lbA~~"
+					}
+				}
+			]
+		},
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		}
+	}
+}
