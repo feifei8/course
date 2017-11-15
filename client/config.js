@@ -27,7 +27,19 @@ var config = {
 
         //科目接口
         subjectList: `${host}/weapp/subject/list`,
-        subjectAdd: `${host}/weapp/subject/add`
+        subjectAdd: `${host}/weapp/subject/add`,
+        subjectDel: `${host}/weapp/subject/del`,
+        //课程保存
+        courseSave: `${host}/weapp/course/save`,
+        courseGetBypk: `${host}/weapp/course/pk`,
+        //程序初始化
+        courseInit: `${host}/weapp/course/init`,
+        //复制课程
+        courseCopy: `${host}/weapp/course/copy`,
+        //我的课程
+        myCourse: `${host}/weapp/course/my`,
+        //共享课程
+        shareCourse: `${host}/weapp/course/share`
     }
 };
 

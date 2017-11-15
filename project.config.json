@@ -3,15 +3,26 @@
 	"svr": "./server",
 	"appid": "wxea530f85f5422977",
 	"projectname": "%E7%8A%B6%E5%85%83%E8%AF%BE%E7%A8%8B%E8%A1%A8",
+	"setting": {
+		"newFeature": true
+	},
 	"condition": {
-		"weapp": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
 			"current": -1,
 			"list": [
 				{
-					"id": -1,
+					"id": 0,
 					"name": "小程序分享卡片",
 					"pathName": "pages/course/course",
-					"query": "?opemod=1",
+					"query": "pk_course=3e2db990-9243-11e7-ad52-525400e4179c",
 					"scene": "1044",
 					"shareInfo": {
 						"groupName": "测试模拟群1",
@@ -20,14 +31,6 @@
 					}
 				}
 			]
-		},
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
 		}
 	}
 }

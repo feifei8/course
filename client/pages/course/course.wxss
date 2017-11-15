@@ -1,10 +1,22 @@
 @import "../../common/lib/iconfont.wxss";
-
+.head{
+  display: flex;
+  margin: 20rpx 0;  
+  font-size: 30rpx;
+  justify-content:space-around;
+}
+.add{
+  text-align: right;
+}
+.title{
+  font-weight: bold;
+  color:#3cc51f;
+}
 .table {
   margin: 15rpx 15rpx 50rpx 15rpx;
   border-top: 1rpx solid #d9d9d9;
   border-left: 1rpx solid #d9d9d9;
-  font-size: 10px;
+  font-size: 24rpx;
   border-collapse: collapse;
 }
 
@@ -48,6 +60,30 @@
   align-items: center;
   justify-content: center;
 }
+.th-half {
+  box-sizing: border-box;
+  flex: 0 0 7.14285715%;
+  height: 40px;
+  border-left: 0;
+  border-top: 0;
+  border-right: 1rpx solid #d9d9d9;
+  border-bottom: 1rpx solid #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.th-onehalf {
+  box-sizing: border-box;
+  flex: 0 0 21.4285714%;
+  height: 40px;
+  border-left: 0;
+  border-top: 0;
+  border-right: 1rpx solid #d9d9d9;
+  border-bottom: 1rpx solid #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .tr {
   width: 100%;
@@ -73,6 +109,30 @@
 .td {
   box-sizing: border-box;
   flex: 0 0 14.2857143%;
+  height: 40px;
+  border-left: 0;
+  border-top: 0;
+  border-right: 1rpx solid #d9d9d9;
+  border-bottom: 1rpx solid #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.td-lessonid {
+  box-sizing: border-box;
+  flex: 0 0 7.14285715%;
+  height: 40px;
+  border-left: 0;
+  border-top: 0;
+  border-right: 1rpx solid #d9d9d9;
+  border-bottom: 1rpx solid #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.td-time {
+  box-sizing: border-box;
+  flex: 0 0 21.4285714%;
   height: 40px;
   border-left: 0;
   border-top: 0;
@@ -196,7 +256,7 @@
   position: fixed;
   bottom: 1rpx; 
   display: inline-block;
-  background-color: #fff;
+  background-color: #efeff4;
   width: 100%;
   height: 100rpx;
   white-space: nowrap;

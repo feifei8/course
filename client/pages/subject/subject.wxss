@@ -7,8 +7,8 @@
   flex-wrap: wrap;
 }
 .flex-item{
-  width: 100rpx;
-  font-size: 26rpx;
+  min-width: 140rpx;
+  font-size: 24rpx;
   
 }
 .flex-item-V{

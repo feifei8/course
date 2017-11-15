@@ -1,64 +1,63 @@
+<view class="head">
+  <view class="add"></view>
+  <view class="title"  data-titlevalue="{{courseTemplate.course_title}}" bindtap="titleEdit">{{courseTemplate.course_title}}</view>
+  <view class="add" bindtap='addCourse'>增加</view>
+</view>
 <view class="table">
   <view class="tr bg-w">
-    <view class="th"></view>
-    <view class="th">时间</view>
-    <view class="th">星期一</view>
-    <view class="th">星期二</view>
-    <view class="th ">星期三</view>
-    <view class="th">星期四</view>
-    <view class="th ">星期五</view>
+    <view class="th-half"></view>
+    <view class="th-onehalf">{{currentDate}}</view>
+    <view class="th" style='{{w1}}'>星期一</view>
+    <view class="th" style='{{w2}}'>星期二</view>
+    <view class="th" style='{{w3}}'>星期三</view>
+    <view class="th" style='{{w4}}'>星期四</view>
+    <view class="th" style='{{w5}}'>星期五</view>
   </view>
 
-    <view class="tr">
-      <view class="td-colsapn-7" bindtap='modalinput' data-desctype="top_desc" data-descvalue="{{courseTemplate.top_desc}}">
-        {{courseTemplate.top_desc}}
-      </view>
+  <view class="tr">
+    <view class="td-colsapn-7" bindtap='modalinput' data-desctype="top_desc" data-descvalue="{{courseTemplate.course_desc.top_desc}}">
+      {{courseTemplate.course_desc.top_desc}}
     </view>
-    <block wx:for="{{courseTemplate.listData}}" wx:key="{{lesson_id}}">
-      <view class="tr bg-g" wx:if="{{index <= 3}}">
-        <view class="td">{{item.lesson_id}}</view>
-        <view class="td" bindtap='timeChoose' data-start="{{item.lesson_start}}" data-end="{{item.lesson_end}}">{{item.lesson_start}}-{{item.lesson_end}}</view>
-        <view class="td-lesson" style='background-color:{{item.monday.subject_desc.color}};' data-lesson-id="{{item.lesson_id}}" data-week="monday" bindtap='editLesson'>{{item.monday.subject_title}}</view>
-        <view class="td-lesson" style='background-color:{{item.tuesday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="tuesday" bindtap='editLesson'>{{item.tuesday.subject_title}}</view>
-        <view class="td-lesson" style='background-color:{{item.wednesday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="wednesday" bindtap='editLesson'>{{item.wednesday.subject_title}}</view>
-        <view class="td-lesson" style='background-color:{{item.thursday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="thursday" bindtap='editLesson'>{{item.thursday.subject_title}}</view>
-        <view class="td-lesson" style='background-color:{{item.friday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="friday" bindtap='editLesson'>{{item.friday.subject_title}}</view>
-      </view>
-    </block>
-    <view class="tr">
-      <view class="td-colsapn-7" bindtap='modalinput' data-desctype="middle_desc" data-descvalue="{{courseTemplate.middle_desc}}">
-        {{courseTemplate.middle_desc}}
-      </view>
+  </view>
+  <block wx:for="{{courseTemplate.listData}}" wx:key="{{lesson_id}}">
+    <view class="tr bg-g" wx:if="{{index <= 3}}">
+      <view class="td-lessonid">{{item.lesson_id}}</view>
+      <view class="td-time" bindtap='timeChoose' data-start="{{item.lesson_start}}" data-end="{{item.lesson_end}}" data-lessonid="{{item.lesson_id}}">{{item.lesson_start}}-{{item.lesson_end}}</view>
+      <view class="td-lesson" style='background-color:{{item.monday.subject_desc.color}};' data-lesson-id="{{item.lesson_id}}" data-week="monday" bindtap='editLesson'>{{item.monday.subject_title}}</view>
+      <view class="td-lesson" style='background-color:{{item.tuesday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="tuesday" bindtap='editLesson'>{{item.tuesday.subject_title}}</view>
+      <view class="td-lesson" style='background-color:{{item.wednesday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="wednesday" bindtap='editLesson'>{{item.wednesday.subject_title}}</view>
+      <view class="td-lesson" style='background-color:{{item.thursday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="thursday" bindtap='editLesson'>{{item.thursday.subject_title}}</view>
+      <view class="td-lesson" style='background-color:{{item.friday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="friday" bindtap='editLesson'>{{item.friday.subject_title}}</view>
     </view>
-    <block wx:for="{{courseTemplate.listData}}" wx:key="{{lesson_id}}">
-      <view class="tr bg-g" wx:if="{{index > 3}}">
-        <view class="td">{{item.lesson_id}}</view>
-        <view class="td">{{item.lesson_start}}-{{item.lesson_end}}</view>
-        <view class="td-lesson" style='background-color:{{item.monday.subject_desc.color}};' data-lesson-id="{{item.lesson_id}}" data-week="monday" bindtap='editLesson'>{{item.monday.subject_title}}</view>
-        <view class="td-lesson" style='background-color:{{item.tuesday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="tuesday" bindtap='editLesson'>{{item.tuesday.subject_title}}</view>
-        <view class="td-lesson" style='background-color:{{item.wednesday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="wednesday" bindtap='editLesson'>{{item.wednesday.subject_title}}</view>
-        <view class="td-lesson" style='background-color:{{item.thursday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="thursday" bindtap='editLesson'>{{item.thursday.subject_title}}</view>
-        <view class="td-lesson" style='background-color:{{item.friday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="friday" bindtap='editLesson'>{{item.friday.subject_title}}</view>
-      </view>
-    </block>
-    <!-- <view class="tr">
-    <view class="td">8</view>
-    <view class="td">4:05-4:55</view>
-    <view class="td-colsapn-3">课外活动</view>
-    <view class="td-colsapn-2"></view>
-  </view> -->
-    <view class="tr">
-      <view class="td-colsapn-7" bindtap='modalinput' data-desctype="bottom_desc" data-descvalue="{{courseTemplate.bottom_desc}}">
-        {{courseTemplate.bottom_desc}}
-      </view>
+  </block>
+  <view class="tr">
+    <view class="td-colsapn-7" bindtap='modalinput' data-desctype="middle_desc" data-descvalue="{{courseTemplate.course_desc.middle_desc}}">
+      {{courseTemplate.course_desc.middle_desc}}
     </view>
+  </view>
+  <block wx:for="{{courseTemplate.listData}}" wx:key="{{lesson_id}}">
+    <view class="tr bg-g" wx:if="{{index > 3}}">
+      <view class="td-lessonid">{{item.lesson_id}}</view>
+      <view class="td-time" bindtap='timeChoose' data-start="{{item.lesson_start}}" data-end="{{item.lesson_end}}" data-lessonid="{{item.lesson_id}}">{{item.lesson_start}}-{{item.lesson_end}}</view>
+      <view class="td-lesson" style='background-color:{{item.monday.subject_desc.color}};' data-lesson-id="{{item.lesson_id}}" data-week="monday" bindtap='editLesson'>{{item.monday.subject_title}}</view>
+      <view class="td-lesson" style='background-color:{{item.tuesday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="tuesday" bindtap='editLesson'>{{item.tuesday.subject_title}}</view>
+      <view class="td-lesson" style='background-color:{{item.wednesday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="wednesday" bindtap='editLesson'>{{item.wednesday.subject_title}}</view>
+      <view class="td-lesson" style='background-color:{{item.thursday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="thursday" bindtap='editLesson'>{{item.thursday.subject_title}}</view>
+      <view class="td-lesson" style='background-color:{{item.friday.subject_desc.color}}' data-lesson-id="{{item.lesson_id}}" data-week="friday" bindtap='editLesson'>{{item.friday.subject_title}}</view>
+    </view>
+  </block>
+  <view class="tr">
+    <view class="td-colsapn-7" bindtap='modalinput' data-desctype="bottom_desc" data-descvalue="{{courseTemplate.course_desc.bottom_desc}}">
+      {{courseTemplate.course_desc.bottom_desc}}
+    </view>
+  </view>
 </view>
 <scroll-view scroll-x="true" class="subject" wx:if="{{editArea}}">
-  <span bindtap="confirm" class="add">
+  <span bindtap="courseSave" class="add">
     <i class="iconfont icon-queren"></i>
   </span>
   <block wx:for="{{subjects}}" wx:key="{{pk}}">
-    <button type='primary' data-item="{{item}}" size="mini" style='background-color:{{item.subject_desc.color}};width:100rpx;border:{{item.subject_desc.bordercss}}' hover-class="button-hover" class="button" bindtap='chooseSubject' bind:longpress="navigateToSubject">{{item.subject_title}}</button>
+    <button type='primary' data-item="{{item}}" size="mini" style='background-color:{{item.subject_desc.color}};width:150rpx;{{item.subject_desc.bordercss}}' hover-class="button-hover" class="button" bindtap='chooseSubject' bind:longpress="navigateToSubject">{{item.subject_title}}</button>
 
   </block>
   <span bindtap="navigateToSubject" class="add">
@@ -77,18 +76,22 @@
   </view>
 
 </view>
-
-<modal hidden="{{hiddenmodalput}}" title="" confirm-text="提交" cancel-text="取消" bindcancel="cancel" bindconfirm="DescConfirm">       <input type='text'placeholder="请输入内容" value='{{courseDescValue}}'  bindblur="DescBlur"/>  
+<modal hidden="{{hiddenTitleModalput}}" title="课程表标题" confirm-text="提交" cancel-text="取消" bindcancel="cancel" bindconfirm="courseTitleConfirm">
+  <input type='text' placeholder="请输入内容" value='{{courseTitleValue}}' bindblur="titleBlur" />
 </modal>
 
-<modal hidden="{{hiddenTimemodalput}}" title="起止时间" confirm-text="提交" cancel-text="取消" bindcancel="cancel" bindconfirm="DescConfirm">
-  <view class="time-choose">    
-   <picker mode="time" value="{{startTime}}" start="09:01" end="21:01" bindchange="bindStartTimeChange">
+<modal hidden="{{hiddenmodalput}}" title="描述信息" confirm-text="提交" cancel-text="取消" bindcancel="cancel" bindconfirm="DescConfirm">
+  <input type='text' placeholder="请输入内容" value='{{courseDescValue}}' bindblur="DescBlur" />
+</modal>
+
+<modal hidden="{{hiddenTimemodalput}}" title="起止时间" confirm-text="提交" cancel-text="取消" bindcancel="cancel" bindconfirm="timeConfirm">
+  <view class="time-choose">
+    <picker mode="time" value="{{startTime}}" start="07:00" end="22:00" bindchange="bindStartTimeChange">
       <view class="weui-input">起：{{startTime}}</view>
     </picker>
-      ────
-    <picker mode="time" value="{{endTime}}" start="09:01" end="21:01" bindchange="bindEndTimeChange">
+    ────
+    <picker mode="time" value="{{endTime}}" start="{{startTime}}" end="22:00" bindchange="bindEndTimeChange">
       <view class="weui-input">止：{{endTime}}</view>
     </picker>
-    </view>  
+  </view>
 </modal>

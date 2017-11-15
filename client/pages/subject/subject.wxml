@@ -7,7 +7,7 @@
         <view class="weui-cells weui-cells_after-title">
           <view class="weui-cell weui-cell_input">
             <view class="weui-cell__bd">
-              <input class="weui-input" name="subject_title"  />
+              <input class="weui-input" name="subject_title" value='{{subject_title}}' bindblur="inputChange" />
             </view>
           </view>
         </view>
@@ -15,10 +15,10 @@
       <view class="page-section">
         <view class="page-section-title">背景颜色</view>
         <view class="page-section-body">
-        <block wx:for="{{colors}}"  wx:key="{{groupNo}}" >
+        <block wx:for="{{colors}}"  wx:key="{{groupNo}}" wx:for-item="group">
         <view class="flex-wrp" style="flex-direction:row;" >
-          <block wx:for="{{item.colors}}"  wx:key="{{id}}" wx:for-item="colorItem" >
-            <button class="flex-item " type='primary' data-item="{{colorItem.color}}" hover-class="button-hover" style="background-color:{{colorItem.color}};color:#fff" bindtap='chooseColor'>{{colorItem.id}}</button>
+          <block wx:for="{{group.colors}}"  wx:key="{{id}}" wx:for-item="colorItem" >
+            <button class="flex-item " type='primary' data-groupNo="{{group.groupNo}}" data-item="{{colorItem}}" hover-class="button-hover" style="background-color:{{colorItem.color}};color:#fff;{{colorItem.choosedcss}}" bindtap='chooseColor'>{{colorItem.text}}</button>
           </block>
         </view>
         </block>
@@ -27,6 +27,7 @@
 
       <view class="btn-area">
         <button type="primary" formType="submit">确认</button>
+        <button type="warn" bindtap='delete' wx:if="{{delVisible}}">删除</button>
         <button formType="reset">取消</button>
       </view>
     </form>

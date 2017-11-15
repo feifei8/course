@@ -39,13 +39,25 @@ router.get('/lesson', validationMiddleware, controllers.lesson.getLessonList)
 router.post('/subject/add', controllers.subject.insertSubject)
 //查询科目列表
 router.get('/subject/list', validationMiddleware, controllers.subject.getSubjectList)
+//删除科目
+router.post('/subject/del', validationMiddleware, controllers.subject.deleteSubject)
 
 /*
 课程相关
 */
-//增加课程
-router.post('/cource/add', controllers.course.addCource)
+//保存课程
+router.post('/course/save', validationMiddleware, controllers.course.saveCourse)
 //根据openid查询
-router.get('/cource/openid', validationMiddleware, controllers.course.getCourceByOpenID)
+router.get('/course/openid', validationMiddleware, controllers.course.getCourseByOpenID)
+//根据pk_course查询
+router.get('/course/pk', validationMiddleware, controllers.course.getCourseByPK)
+//程序初始化
+router.post('/course/init', validationMiddleware, controllers.course.addUserCourse)
+//复制课程
+router.post('/course/copy', validationMiddleware, controllers.course.copyCourse)
+//我的课表
+router.get('/course/my', validationMiddleware, controllers.course.myCourse)
+//共享课表
+router.get('/course/share', validationMiddleware, controllers.course.shareCourse)
 
 module.exports = router

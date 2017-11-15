@@ -1,7 +1,7 @@
 {
     "pages": [
         "pages/course/course",
-        "pages/index/index",
+        "pages/my/my",
         "pages/chat/chat",
         "pages/subject/subject"
         
@@ -32,7 +32,7 @@
           "text": "作业"
         },
         {
-          "pagePath": "pages/index/index",
+          "pagePath": "pages/my/my",
           "iconPath": "images/icon_tab_mine1.png",
           "selectedIconPath": "images/icon_tab_mine.png",
           "text": "我的"
