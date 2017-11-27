@@ -19,11 +19,12 @@ Page({
     hiddenmodalput: true,
     hiddenTimemodalput: true,
     hiddenTitleModalput: true,
-    courseTitleValue:'',
+    courseTitleValue: '',
     courseDescValue: '',
     courseDescType: '',
     editArea: false,
     editVisible: true,
+    isShareCourse: false,//是否共享课表
     confirmVisible: false,
     shareVisible: true,
     bordercss: '4rpx solid #fff',
@@ -478,7 +479,7 @@ Page({
         }
       ]
     },
-    courseTemplate:'',
+    courseTemplate: '',
     subjects: [
       {
         pk: '3e2db990-9243-11e7-ad52-525400e4179c',
@@ -527,20 +528,21 @@ Page({
     startTime: '8:00',
     endTime: '17:00',
     lesson_id: 0,
-    currentDate: (date.getMonth() + 1) + "月" + date.getDate()+"日 ",
+    currentDate: (date.getMonth() + 1) + "月" + date.getDate() + "日 ",
     currentweek: new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")[date.getDay()],
-    w1:'',
+    w1: '',
     w2: '',
     w3: '',
     w4: '',
     w5: ''
   },
   onShow: function () {
+
     var currentweek = this.data.currentweek
     switch (currentweek) {
       case "星期一":
         this.setData({
-          w1:"color:#3cc51f"
+          w1: "color:#3cc51f"
         })
         break;
       case "星期二":
@@ -567,45 +569,116 @@ Page({
         this.setData({
           w1: "color:#3cc51f"
         })
-        
+
     }
     var that = this
     var courseTemplate = wx.getStorageSync('course')
-    if (courseTemplate.listData && courseTemplate.listData.length>0) {
-      that.setData({
-        courseTemplate: courseTemplate
-      })
-    } else {
+    if (app.globalData.pk_course && courseTemplate == '') {
+      that.courseGetBypk(app.globalData.pk_course)
+      that.subjectLidtBypk(app.globalData.pk_course)
+      that.isShareCourse(app.globalData.pk_course)
+    }
+    if (courseTemplate) {
+      if (courseTemplate.listData && courseTemplate.listData.length > 0) {
+        that.setData({
+          courseTemplate: courseTemplate
+        })
+        app.globalData.pk_course = courseTemplate.pk_course
+        that.subjectLidtBypk(app.globalData.pk_course)
+        that.isShareCourse(app.globalData.pk_course)
+      }
+    }
+    if (app.globalData.pk_course = '' && courseTemplate == '') {
       wx.showLoading({
         title: '加载中',
       })
       qcloud.request({
-        url: config.service.courseGetBypk,
-        data: {
-          pk_course: app.globalData.pk_course
-        },
-        login: true,
+        url: config.service.courseDefault,
+        method: 'get',
         success(result) {
-          wx.hideLoading()
-          console.log(result)
           if (result.data.code === 200) {
-            if (result.data.data.listData.length > 0){
-              that.setData({
-                courseTemplate: result.data.data
-              })
-              wx.setStorageSync('course', result.data.data)
+            if (result.data.data === false) {
+              qcloud.request({
+                // 要请求的地址
+                url: config.service.courseCopy,
+                method: 'post',
+                data: {
+                  pk_course: app.globalData.pk_course
+                },
+                success(copyres) {
+                  if (copyres.data.code === 200) {
+                    that.courseGetBypk(copyres.data.data.pk)
+                    that.subjectLidtBypk(copyres.data.data.pk)
+                    that.isShareCourse(copyres.data.data.pk)
+                  }
+                },
+                catch(e) {
+                  console.log(e)
+                }
+              });
             }
+            else {
+              app.globalData.pk_course = result.data.data[0].pk_course
+              that.courseGetBypk(app.globalData.pk_course)
+              that.subjectLidtBypk(app.globalData.pk_course)
+              that.isShareCourse(app.globalData.pk_course)
+            }
+
           }
+        },
+        catch(e) {
+          console.log(e)
         }
       })
-      console.log(this.data.courseTemplate)
     }
+},
+  //根据pk获取课程
+  courseGetBypk: function (pk_course) {
+    var that = this
+    qcloud.request({
+      url: config.service.courseGetBypk,
+      data: {
+        pk_course: pk_course
+      },
+      login: true,
+      success(result) {
+        wx.hideLoading()
+        console.log(result)
+        if (result.data.code === 200) {
+          if (result.data.data.listData.length > 0) {
 
+            //记录日志
+            qcloud.request({
+              url: config.service.addUserLog,
+              method: 'post',
+              data: {
+                pk_course: pk_course
+              },
+              login: true,
+              success(res) {
+                if (res.data.code === 200) {
+                  that.setData({
+                    courseTemplate: result.data.data
+                  })
+                  wx.setStorageSync('course', result.data.data)
+                }
+              }
+
+            })
+          }
+        }
+      }
+    })
+
+  },
+  //获取科目列表
+  subjectLidtBypk: function (pk_course) {
+    var that = this
     qcloud.request({
       url: config.service.subjectList,
       login: true,
-      data:{
-        pk_course: app.globalData.pk_course
+      data: {
+        pk_course: pk_course
       },
       success(result) {
         wx.hideLoading()
@@ -618,6 +691,29 @@ Page({
           }
           that.setData({
             subjects: subjectList
+          })
+        }
+      },
+      fali(error) {
+        console.log('request fail', error)
+      }
+    })
+  },
+  // 是否共享课表
+  isShareCourse: function () {
+    var that = this
+    qcloud.request({
+      url: config.service.isShareCourse,
+      login: true,
+      data: {
+        pk_course: app.globalData.pk_course
+      },
+      success(result) {
+        wx.hideLoading()
+        if (result.data.code === 200) {
+          var isShareCourse = result.data.data
+          that.setData({
+            isShareCourse: isShareCourse
           })
         }
       },
@@ -658,6 +754,16 @@ Page({
       shareVisible: false,
       editVisible: false,
       confirmVisible: true
+
+    })
+  },
+  editCancel: function () {
+    var editArea = this.data.editArea;
+    this.setData({
+      editArea: !editArea,
+      shareVisible: true,
+      editVisible: true,
+      confirmVisible: false
 
     })
   },
@@ -721,12 +827,12 @@ Page({
     if (lessonData && chooseSubject) {
       for (var i = 0; i < lessonData.length; i++) {
         if (lessonData[i].lesson_id == lessonId) {
-          if (lessonData[i][week]){
+          if (lessonData[i][week]) {
             lessonData[i][week].pk_subject = chooseSubject.pk
             lessonData[i][week].subject_title = chooseSubject.subject_title
             lessonData[i][week].subject_desc = chooseSubject.subject_desc
-          }else{
-            var weekjson={
+          } else {
+            var weekjson = {
               pk_subject: chooseSubject.pk,
               subject_title: chooseSubject.subject_title,
               subject_desc: chooseSubject.subject_desc
@@ -741,18 +847,18 @@ Page({
       this.setData({
         courseTemplate: courseTemplate
       })
-    }else{
+    } else {
       for (var i = 0; i < lessonData.length; i++) {
         if (lessonData[i].lesson_id == lessonId) {
           if (lessonData[i][week]) {
             var weekjson = {
-              pk_subject:'',
+              pk_subject: '',
               subject_title: '',
               subject_desc: ''
 
             }
             lessonData[i][week] = weekjson
-          } 
+          }
           this.setData({
             courseTemplate: courseTemplate
           })
@@ -830,11 +936,11 @@ Page({
       hiddenmodalput: true,
       hiddenTimemodalput: true,
       hiddenTitleModalput: true
-      
+
     });
   },
   // 点击标题修改事件
-  titleEdit:function(e){
+  titleEdit: function (e) {
     if (!this.data.confirmVisible)
       return
     var courseTitleValue = e.currentTarget.dataset.titlevalue
@@ -931,7 +1037,7 @@ Page({
     console.log(courseTemplate)
   },
   // 增加课程表
-  addCourse: function(){
+  addCourse: function () {
     qcloud.request({
       // 要请求的地址
       url: config.service.courseCopy,

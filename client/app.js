@@ -4,6 +4,7 @@
 
 var qcloud = require('./vendor/wafer2-client-sdk/index');
 var config = require('./config');
+import Touches from './common/lib/js/touches.js'
 
 
 App({
@@ -12,11 +13,14 @@ App({
    */
   onLaunch(ops) {
     var that=this
+    if (ops.query.pk_course) {
+      that.globalData.pk_course = ops.query.pk_course
+    }
     qcloud.setLoginUrl(config.service.loginUrl);
     qcloud.login({
       success(result) {
-        //showSuccess('登录成功');
         console.log('登录成功', result);
+       
       },
 
       fail(error) {
@@ -24,9 +28,11 @@ App({
         console.log('登录失败', error);
       }
     });
-    if (ops.scene == 1044) { // 当用户通过带 shareTicket 的分享卡片进入小程序时，小程序才开始读取群聊信息
+    if (ops.scene == 1044) {
+      // 当用户通过带 shareTicket 的分享卡片进入小程序时，小程序才开始读取群聊信息
       // console.log(ops.shareTicket)  你可以取消这段代码的注释，将 shareTicket 输出至控制台
-      var pk_course = ops.query.pk_course
+      wx.setStorageSync('course', '')
+      this.globalData.scene = ops.scene
       var sessionKey = qcloud.getSession()
       var iv = ''
       var encryptedData = ''
@@ -37,7 +43,7 @@ App({
           iv = res.iv
           encryptedData = res.encryptedData
           var data = {
-            pk_course: pk_course,
+            pk_course: that.globalData.pk_course,
             sessionKey: sessionKey,
             iv: iv,
             encryptedData: encryptedData
@@ -47,16 +53,14 @@ App({
             // 要请求的地址
             url: config.service.courseInit,
             method: 'post',
-            // 请求之前是否登陆，如果该项指定为 true，会在请求之前进行登录
-            login: true,
             data: data,
 
             success(result) {
               if (result.data.code === 200) {
-                console.log('request success', result.data.data);
+                //console.log('request success', result.data.data);
 
               }
-              that.globalData.pk_course = pk_course
+
             },
             catch(e) {
               console.log(e)
@@ -70,15 +74,39 @@ App({
        * 再随意选择一个测试群即可。
        *
        */
-      
+
 
     } else {
+      if (ops.query.pk_course){
+        qcloud.request({
+          // 要请求的地址
+          url: config.service.addUserCourseOther,
+          method: 'post',
+          data: {
+            pk_course: ops.query.pk_course
+          },
+
+          success(result) {
+            if (result.data.code === 200) {
+              //console.log('request success', result.data.data);
+
+            }
+
+          },
+          catch(e) {
+            console.log(e)
+          }
+        })
+      }
       
     }
+   
   },
   globalData: {
-    pk_course: '3c5be2a5-7434-5112-8512-cd3f5f64a5a6',
-    courseTemplate: ''
+    pk_course: '3e2db990-9243-11e7-ad52-525400e4179c',
+    courseTemplate: '',
+    scene:''
 
-  }
+  },
+  Touches: new Touches()
 });

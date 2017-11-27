@@ -1,7 +1,19 @@
 <view class="head">
-  <view class="add"></view>
-  <view class="title"  data-titlevalue="{{courseTemplate.course_title}}" bindtap="titleEdit">{{courseTemplate.course_title}}</view>
-  <view class="add" bindtap='addCourse'>增加</view>
+  <view wx:if="{{!isShareCourse}}">
+    <view class="add" bindtap="edit" wx:if="{{editVisible}}">
+      <image src='/images/edit.png' style='width:48rpx;height:48rpx'></image>
+    </view>
+    <view class="add" bindtap="editCancel" wx:if="{{!editVisible}}">
+      <image src='/images/cancel.png' style='width:48rpx;height:48rpx'></image>
+    </view>
+  </view>
+  <view class="add" wx:if="{{isShareCourse}}">
+    <image src='/images/share.png' style='width:48rpx;height:48rpx'></image>
+  </view>
+  <view class="title" data-titlevalue="{{courseTemplate.course_title}}" bindtap="titleEdit">{{courseTemplate.course_title}}</view>
+  <view class="info">
+    <image src='/images/readme.png' style='width:45rpx;height:40rpx'></image>
+  </view>
 </view>
 <view class="table">
   <view class="tr bg-w">
@@ -52,24 +64,25 @@
     </view>
   </view>
 </view>
-<scroll-view scroll-x="true" class="subject" wx:if="{{editArea}}">
-  <span bindtap="courseSave" class="add">
-    <i class="iconfont icon-queren"></i>
-  </span>
-  <block wx:for="{{subjects}}" wx:key="{{pk}}">
-    <button type='primary' data-item="{{item}}" size="mini" style='background-color:{{item.subject_desc.color}};width:150rpx;{{item.subject_desc.bordercss}}' hover-class="button-hover" class="button" bindtap='chooseSubject' bind:longpress="navigateToSubject">{{item.subject_title}}</button>
-
-  </block>
-  <span bindtap="navigateToSubject" class="add">
-    <i class="iconfont icon-zengjia"></i>
-  </span>
-</scroll-view>
+<view class="subject" wx:if="{{editArea}}">
+  <view bindtap="courseSave" class="subject-add">
+    <image src='/images/confirm.png' style='width:60rpx;height:60rpx'></image>
+  </view>
+  <scroll-view scroll-x="true" style='width:600rpx;'>
+    <block wx:for="{{subjects}}" wx:key="{{pk}}">
+      <button type='primary' data-item="{{item}}" size="mini" style='background-color:{{item.subject_desc.color}};width:150rpx;{{item.subject_desc.bordercss}}' hover-class="button-hover" class="button" bindtap='chooseSubject' bind:longpress="navigateToSubject">{{item.subject_title}}</button>
+    </block>
+  </scroll-view>
+  <view bindtap="navigateToSubject" class="subject-finish">
+    <image src='/images/add.png' style='width:60rpx;height:60rpx'></image>
+  </view>
+</view>
 
 <view class="footer">
   <view class="share">
-    <button bindtap="edit" plain="true" wx:if="{{editVisible}}">
+    <!-- <button bindtap="edit" plain="true" wx:if="{{editVisible}}">
       <i class="iconfont icon-bianji1"></i>
-    </button>
+    </button> -->
     <button bindtap="share" plain="true" open-type="share" wx:if="{{shareVisible}}">
       <i class="iconfont icon-fenxiang"></i>
     </button>

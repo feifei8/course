@@ -16,7 +16,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 1,
 			"list": [
 				{
 					"id": 0,
@@ -29,6 +29,13 @@
 						"shareName": "n6JGJCr6UcBFSdqXbOSzwrXcmYQJh_jCxSHZK01Tgn4@cr4dev",
 						"shareKey": "eIPVLqgZuL6WfuMtPB94oDW6MtJVfAp7Nkn_xGxr5zW35SV-05FzVzqKyE-nWED-X1o0eI_cvrSafy5mA68lbA~~"
 					}
+				},
+				{
+					"id": 1,
+					"name": "单人聊天小程序分享卡片",
+					"pathName": "pages/course/course",
+					"query": "pk_course=f13120a0-9115-58a2-94ff-757cb2ec1f99",
+					"scene": "1007"
 				}
 			]
 		}

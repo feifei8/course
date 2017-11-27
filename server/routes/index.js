@@ -51,13 +51,26 @@ router.post('/course/save', validationMiddleware, controllers.course.saveCourse)
 router.get('/course/openid', validationMiddleware, controllers.course.getCourseByOpenID)
 //根据pk_course查询
 router.get('/course/pk', validationMiddleware, controllers.course.getCourseByPK)
-//程序初始化
+//从群组过来的分享插入分享课程
 router.post('/course/init', validationMiddleware, controllers.course.addUserCourse)
+//从其他分享插入分享课程
+router.post('/course/addUserCourseOther', validationMiddleware, controllers.course.addUserCourseOther)
 //复制课程
 router.post('/course/copy', validationMiddleware, controllers.course.copyCourse)
 //我的课表
 router.get('/course/my', validationMiddleware, controllers.course.myCourse)
 //共享课表
 router.get('/course/share', validationMiddleware, controllers.course.shareCourse)
+//是否共享课表
+router.get('/course/isShare', validationMiddleware, controllers.course.isShareCourse)
+//查找默认课表
+router.get('/course/default', validationMiddleware, controllers.course.courseDefault)
+//记录访问日志
+router.post('/course/adduserlog', validationMiddleware, controllers.course.addUserLog)
+//删除我的课表
+router.post('/course/del', validationMiddleware, controllers.course.delCourse)
+//删除我的共享课表
+router.post('/course/share/del', validationMiddleware, controllers.course.delShareCourse)
+
 
 module.exports = router

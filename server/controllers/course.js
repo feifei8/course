@@ -210,7 +210,7 @@ async function saveCourse(ctx, next) {
   }
 }
 /*
-*插入人员课程表关系表
+*由群分享过来的插入人员课程表关系表
 */
 async function addUserCourse(ctx, next) {
   if (ctx.state.$wxInfo.loginState === 1) {
@@ -251,6 +251,35 @@ async function addUserCourse(ctx, next) {
     ctx.state.code = -1
   }
 }
+/*
+*由其他分享过来的插入人员课程表关系表
+*/
+async function addUserCourseOther(ctx, next) {
+  if (ctx.state.$wxInfo.loginState === 1) {
+    var userinfo = ctx.state.$wxInfo.userinfo
+    var openId = userinfo.openId
+    req = ctx.request.body
+    if (req) {
+          await mysql("user_course").insert([{
+            pk_course: req.pk_course,
+            openId: openId
+          }]
+          )
+            .then(function () {
+              ctx.state.code = 200
+              ctx.state.data = "插入成功"
+            })
+            .catch(function (err) {
+              ctx.state.code = 900
+              ctx.state.data = err.code
+            })
+
+        }
+    }
+    else {
+    ctx.state.code = -1
+  }
+}
 // 复制为自己的课程表
 async function copyCourse(ctx, next) {
   if (ctx.state.$wxInfo.loginState === 1) {
@@ -259,6 +288,7 @@ async function copyCourse(ctx, next) {
     req = ctx.request.body
     if (req) {
       var pk_course = req.pk_course
+      var courseNewReturn=''
       await mysql.transaction(function (trx) {
         mysql("course").select("*").where("pk", pk_course)
           .then(function (res) {
@@ -271,6 +301,7 @@ async function copyCourse(ctx, next) {
               openId: openId
 
             }
+            courseNewReturn = courseNew
             mysql.insert(courseNew)
               .into('course')
               .transacting(trx)
@@ -342,7 +373,7 @@ async function copyCourse(ctx, next) {
       })
         .then(function (resp) {
           ctx.state.code = 200
-          ctx.state.data = 'Transaction complete.'
+          ctx.state.data = courseNewReturn
           console.log('Transaction complete.')
         })
         .catch(function (err) {
@@ -387,6 +418,121 @@ async function shareCourse(ctx, next) {
   }
 }
 
+//判断当前课表是否共享课表 
+async function isShareCourse(ctx, next) {
+  if (ctx.state.$wxInfo.loginState === 1) {
+    var userinfo = ctx.state.$wxInfo.userinfo
+    var openId = userinfo.openId
+    req = ctx.query
+    if (req) {
+      var pk_course = req.pk_course
+      await mysql.select("*").from("course").where({ "pk": pk_course, "openId": openId })
+        .then(function (res) {
+          ctx.state.code = 200
+          if (res.length > 0) {
+            ctx.state.data = false
+          } else {
+            ctx.state.data = true
+          }
+
+        })
+        .catch(function (err) {
+          ctx.state.code = 900
+          ctx.state.data = err.code
+        })
+    }
+  }
+
+}
+
+//查找个人默认课表
+async function courseDefault(ctx, next) {
+  if (ctx.state.$wxInfo.loginState === 1) {
+    var userinfo = ctx.state.$wxInfo.userinfo
+    var openId = userinfo.openId
+    await mysql.select("*").from("user_log").where({ "openId": openId }).limit(1).orderBy('create_date', 'desc')
+      .then(function (res) {
+        ctx.state.code = 200
+        if (res.length > 0) {
+          ctx.state.data = res
+        } else {
+          ctx.state.data = false
+        }
+
+      })
+      .catch(function (err) {
+        ctx.state.code = 900
+        ctx.state.data = err.code
+      })
+
+  }
+
+}
+//插入访问日志
+async function addUserLog(ctx, next) {
+  if (ctx.state.$wxInfo.loginState === 1) {
+    var userinfo = ctx.state.$wxInfo.userinfo
+    var openId = userinfo.openId
+    req = ctx.request.body
+    if (req) {
+      var pk_course = req.pk_course
+      await mysql("user_log").insert({ "pk_course": pk_course, "openId": openId })
+        .then(function (res) {
+          ctx.state.code = 200
+          ctx.state.data = '插入成功'
+
+        })
+        .catch(function (err) {
+          ctx.state.code = 900
+          ctx.state.data = err.code
+        })
+    }
+  }
+
+}
+//删除我的课表
+async function delCourse(ctx,next){
+  if (ctx.state.$wxInfo.loginState === 1) {
+    var userinfo = ctx.state.$wxInfo.userinfo
+    var openId = userinfo.openId
+    req = ctx.request.body
+    if (req.pk_course) {
+      var pk_course = req.pk_course
+      await mysql("course").where('pk', pk_course).del()
+        .then(function (res) {
+          ctx.state.code = 200
+          ctx.state.data = '删除成功'
+
+        })
+        .catch(function (err) {
+          ctx.state.code = 900
+          ctx.state.data = err.code
+        })
+    }
+  }
+}
+//删除共享课表
+async function delShareCourse(ctx, next) {
+  if (ctx.state.$wxInfo.loginState === 1) {
+    var userinfo = ctx.state.$wxInfo.userinfo
+    var openId = userinfo.openId
+    req = ctx.request.body
+    if (req.pk_course) {
+      var pk_course = req.pk_course
+      await mysql("user_course").where({ 'pk_course': pk_course, 'openId': openId}).del()
+        .then(function (res) {
+          ctx.state.code = 200
+          ctx.state.data = '删除成功'
+
+        })
+        .catch(function (err) {
+          ctx.state.code = 900
+          ctx.state.data = err.code
+        })
+    }
+  }
+}
+
 module.exports = {
   getCourseByOpenID,
   saveCourse,
@@ -394,6 +540,11 @@ module.exports = {
   addUserCourse,
   copyCourse,
   myCourse,
-  shareCourse
-
+  shareCourse,
+  isShareCourse,
+  courseDefault,
+  addUserLog,
+  addUserCourseOther,
+  delCourse,
+  delShareCourse
 }

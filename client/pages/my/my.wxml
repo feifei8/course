@@ -3,42 +3,54 @@
     <image class="index-logo" src="{{userInfoAvatar}}"></image>
     <view class="index-desc">{{nickName}}</view>
   </view>
-  <view class="index-bd">
-    <view class="kind-list">
-      <view class="kind-list-item" wx-if="{{mycourse}}">
-        <view class="kind-list-item-hd kind-list-item-hd-show">
-          <view class=" kind-list-text ">我的课表</view>
-          <image class="kind-list-img " src="resources/kind/{{item.id}}.png "></image>
-        </view>
-        <view class="kind-list-item-bd kind-list-item-bd-show ">
-          <view class="navigator-box navigator-box-show ">
-            <block wx:for="{{mycourse}}" wx:key="{{item.pk}}">
-              <navigator url="/pages/course/course" class="navigator " open-type="switchTab">
-                <view class="navigator-text ">{{item.course_title}}</view>
-                <view class="navigator-arrow "></view>
-              </navigator>
-            </block>
+  
+</view>
+<view class="page-section">
+  <view class="page-section-title flex-row">
+      <view>我的课表</view>
+      <view><image src="/images/add1.png" style='width:50rpx;height:50rpx' /></view>
+  </view>
+  <view class="item-wrapper">
+    <view class="item-list" wx:for="{{mycourse}}" wx:for-item="item" wx:for-index="index" wx:key="that">
+      <view class="item-info" data-index="{{index}}" data-pk="{{item.pk}}" bindtap="switchTab" data-category="my" bindtouchstart="touchS" bindtouchmove="touchM" bindtouchend="touchE" style="left:{{item.left + 'rpx'}}">
+        <view class="info-img" style='background-color:{{colors[index>4?1:index]}}'>{{index+1}}</view>
+        <view class="info-wrapper">
+          <view class="info-desc">
+            <view class="name">{{item.course_title}}</view>
+            <view class="time">{{item.create_date}}</view>
           </view>
-
+          <view class="info-content">{{item.school}}</view>
         </view>
       </view>
-      <view class="kind-list-item" wx-if="{{sharecourse}}">
-        <view class="kind-list-item-hd kind-list-item-hd-show">
-          <view class=" kind-list-text ">分享给我的课表</view>
-          <image class="kind-list-img " src="resources/kind/{{item.id}}.png "></image>
-        </view>
-        <view class="kind-list-item-bd kind-list-item-bd-show ">
-          <view class="navigator-box navigator-box-show ">
-            <block wx:for="{{sharecourse}}" wx:key="{{item.pk}}">
-              <navigator url="pages/course/course" class="navigator ">
-                <view class="navigator-text ">{{item.course_title}}</view>
-                <view class="navigator-arrow "></view>
-              </navigator>
-            </block>
-            </view>
-        </view>
+      <view class="item-oper">
+        <!-- <view class="oper-star" bindtap="itemDelete" data-index="{{index}}">默认</view> -->
+        <view class="oper-delete" bindtap="itemDelete" data-index="{{index}}" data-pk="{{item.pk}}">删除</view>
       </view>
-
     </view>
   </view>
+  
+</view>
+
+<view class="page-section">
+  <view class="page-section-title">
+      <view>共享课表</view>
+  </view>
+  <view class="item-wrapper">
+    <view class="item-list" wx:for="{{sharecourse}}" wx:for-item="item" wx:for-index="index" wx:key="that">
+      <view class="item-info" data-index="{{index}}" data-pk="{{item.pk}}" data-category="share" bindtap="switchTab" bindtouchstart="stouchS" bindtouchmove="stouchM" bindtouchend="stouchE" style="left:{{item.left + 'rpx'}}">
+        <view class="info-img" style='background-color:{{colors[index>4?1:index]}}'>{{index+1}}</view>
+        <view class="info-wrapper">
+          <view class="info-desc">
+            <view class="name">{{item.course_title}}</view>
+            <view class="time">{{item.create_date}}</view>
+          </view>
+          <view class="info-content">{{item.school}}</view>
+        </view>
+      </view>
+      <view class="item-oper">
+        <view class="oper-delete" bindtap="itemDeleteS" data-index="{{index}}" data-pk="{{item.pk}}">删除</view>
+      </view>
+    </view>
+  </view>
+  
 </view>

@@ -32,14 +32,26 @@ var config = {
         //课程保存
         courseSave: `${host}/weapp/course/save`,
         courseGetBypk: `${host}/weapp/course/pk`,
-        //程序初始化
+        //从群组过来的分享插入分享课程
         courseInit: `${host}/weapp/course/init`,
+        //从其他分享插入分享课程
+        addUserCourseOther: `${host}/weapp/course/addUserCourseOther`,
         //复制课程
         courseCopy: `${host}/weapp/course/copy`,
         //我的课程
         myCourse: `${host}/weapp/course/my`,
         //共享课程
-        shareCourse: `${host}/weapp/course/share`
+        shareCourse: `${host}/weapp/course/share`,
+        //检测是否共享课表
+        isShareCourse: `${host}/weapp/course/isShare`,
+        //查找默认课表
+        courseDefault: `${host}/weapp/course/default`,
+        //记录访问日志
+        addUserLog: `${host}/weapp/course/adduserlog`,
+        //删除我的课程表
+        courseDel: `${host}/weapp/course/del`,
+        //删除我的共享课程表
+        shareCourseDel: `${host}/weapp/course/share/del`
     }
 };
 

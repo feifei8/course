@@ -1,12 +1,16 @@
 @import "../../common/lib/iconfont.wxss";
 .head{
   display: flex;
-  margin: 20rpx 0;  
+  margin: 30rpx 0;  
   font-size: 30rpx;
-  justify-content:space-around;
+  justify-content:space-between;
 }
 .add{
+  padding-left: 20rpx;
   text-align: right;
+}
+.info{
+  padding-right: 20rpx;
 }
 .title{
   font-weight: bold;
@@ -253,13 +257,15 @@
 }
 
 .subject {
+  padding:20rpx 4rpx 20rpx 4rpx;
   position: fixed;
   bottom: 1rpx; 
-  display: inline-block;
+  display: flex;
   background-color: #efeff4;
   width: 100%;
-  height: 100rpx;
   white-space: nowrap;
+  justify-content:space-between;
+  height:60rpx;
 
 }
 .button {
@@ -299,9 +305,13 @@ button[plain] {
   border-bottom: 10rpx #fff solid;
 }
 
-.add {
-  margin-left: 10rpx;
-  margin-right: 10rpx;
+.subject-add {
+  padding-right:4rpx;
+  border-right: 2rpx solid #d9d9d9;
+}
+.subject-finish {
+  border-left: 2rpx solid #d9d9d9;
+  padding-left:4rpx;
 }
 .time-choose{
   display:flex;
