@@ -13,21 +13,18 @@ App({
    */
   onLaunch(ops) {
     var that=this
+    console.log("app onlaunch .....")
+    console.log(ops)
     if (ops.query.pk_course) {
       that.globalData.pk_course = ops.query.pk_course
+      wx.setStorageSync('course', '')
+      console.log("that.globalData.pk_cours ...")
+      console.log(that.globalData.pk_course)
     }
-    qcloud.setLoginUrl(config.service.loginUrl);
-    qcloud.login({
-      success(result) {
-        console.log('登录成功', result);
-       
-      },
 
-      fail(error) {
-        //showModel('登录失败', error);
-        console.log('登录失败', error);
-      }
-    });
+    qcloud.setLoginUrl(config.service.loginUrl);
+    that.login()
+   
     if (ops.scene == 1044) {
       // 当用户通过带 shareTicket 的分享卡片进入小程序时，小程序才开始读取群聊信息
       // console.log(ops.shareTicket)  你可以取消这段代码的注释，将 shareTicket 输出至控制台
@@ -48,21 +45,24 @@ App({
             iv: iv,
             encryptedData: encryptedData
           }
-
           qcloud.request({
             // 要请求的地址
             url: config.service.courseInit,
             method: 'post',
             data: data,
-
+            login: true,
             success(result) {
+              console.log("init success")
+              console.log(result)
               if (result.data.code === 200) {
+  
                 //console.log('request success', result.data.data);
 
               }
 
             },
             catch(e) {
+              console.log("init error")
               console.log(e)
             }
           })
@@ -77,6 +77,8 @@ App({
 
 
     } else {
+      console.log("app scense else ....")
+      console.log(ops.query.pk_course)
       if (ops.query.pk_course){
         qcloud.request({
           // 要请求的地址
@@ -85,9 +87,10 @@ App({
           data: {
             pk_course: ops.query.pk_course
           },
-
+          login: true,
           success(result) {
             if (result.data.code === 200) {
+              console.log("ops.query.pk_course ok")
               //console.log('request success', result.data.data);
 
             }
@@ -102,8 +105,41 @@ App({
     }
    
   },
+  login:function(){
+    var that=this
+    qcloud.login({
+      success:function(result) {
+        console.log('登录成功', result);
+
+      },
+
+      fail: function(error) {
+        that.openSetting()
+        console.log('登录失败', error);
+      }
+    });
+
+  },
+
+  // 跳转到设置页面开启微信授权
+  openSetting: function () {
+    var that = this
+    if (wx.openSetting) {
+      wx.openSetting({
+        success: function (res) {
+          //尝试再次登录
+          that.login()
+        }
+      })
+    } else {
+      wx.showModal({
+        title: '授权提示',
+        content: '小程序需要您的微信授权才能使用哦~ 错过授权页面的处理方法：删除小程序->重新搜索进入->点击授权按钮'
+      })
+    }
+  },
   globalData: {
-    pk_course: '3e2db990-9243-11e7-ad52-525400e4179c',
+    pk_course: '',
     courseTemplate: '',
     scene:''
 

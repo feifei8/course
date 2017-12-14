@@ -3,7 +3,8 @@
  */
 
 // 此处主机域名修改成腾讯云解决方案分配的域名
-var host = 'https://tuimy0x9.qcloud.la';
+//var host = 'https://tuimy0x9.qcloud.la';
+var host = 'https://981211159.1yuelongmen.com';
 
 var config = {
 
@@ -51,7 +52,9 @@ var config = {
         //删除我的课程表
         courseDel: `${host}/weapp/course/del`,
         //删除我的共享课程表
-        shareCourseDel: `${host}/weapp/course/share/del`
+        shareCourseDel: `${host}/weapp/course/share/del`,
+        //增加课程
+        courseAdd: `${host}/weapp/course/add`,
     }
 };
 

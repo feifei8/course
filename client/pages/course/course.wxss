@@ -1,4 +1,7 @@
 @import "../../common/lib/iconfont.wxss";
+page {
+  background-color: #FFF;
+}
 .head{
   display: flex;
   margin: 30rpx 0;  
@@ -265,7 +268,7 @@
   width: 100%;
   white-space: nowrap;
   justify-content:space-between;
-  height:60rpx;
+  height:70rpx;
 
 }
 .button {
@@ -307,13 +310,21 @@ button[plain] {
 
 .subject-add {
   padding-right:4rpx;
-  border-right: 2rpx solid #d9d9d9;
+  border-right:2rpx solid #d9d9d9;
+  margin-right:6rpx;
+  width:70rpx;
+
 }
 .subject-finish {
   border-left: 2rpx solid #d9d9d9;
+  margin-left:6rpx;
+  width:78rpx;
   padding-left:4rpx;
 }
 .time-choose{
   display:flex;
   justify-content:space-around;
+}
+.memberList{
+  min-height: 80rpx;
 }

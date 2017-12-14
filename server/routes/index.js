@@ -46,6 +46,8 @@ router.post('/subject/del', validationMiddleware, controllers.subject.deleteSubj
 课程相关
 */
 //保存课程
+router.post('/course/add', validationMiddleware, controllers.course.addCourse)
+//保存课程
 router.post('/course/save', validationMiddleware, controllers.course.saveCourse)
 //根据openid查询
 router.get('/course/openid', validationMiddleware, controllers.course.getCourseByOpenID)

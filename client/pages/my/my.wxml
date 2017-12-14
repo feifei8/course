@@ -5,10 +5,10 @@
   </view>
   
 </view>
-<view class="page-section">
+<view class="page-section" >
   <view class="page-section-title flex-row">
       <view>我的课表</view>
-      <view><image src="/images/add1.png" style='width:50rpx;height:50rpx' /></view>
+      <view bindtap='redirectAdd'><image src="/images/add1.png" style='width:50rpx;height:50rpx' /></view> 
   </view>
   <view class="item-wrapper">
     <view class="item-list" wx:for="{{mycourse}}" wx:for-item="item" wx:for-index="index" wx:key="that">
@@ -23,7 +23,7 @@
         </view>
       </view>
       <view class="item-oper">
-        <!-- <view class="oper-star" bindtap="itemDelete" data-index="{{index}}">默认</view> -->
+        
         <view class="oper-delete" bindtap="itemDelete" data-index="{{index}}" data-pk="{{item.pk}}">删除</view>
       </view>
     </view>
@@ -31,7 +31,7 @@
   
 </view>
 
-<view class="page-section">
+<view class="page-section" wx:if="{{sharecourse.length>0}}">
   <view class="page-section-title">
       <view>共享课表</view>
   </view>
@@ -48,9 +48,14 @@
         </view>
       </view>
       <view class="item-oper">
+       <view class="oper-star" bindtap="copyShareCourse" data-index="{{index}}" data-pk="{{item.pk}}">私有</view> 
         <view class="oper-delete" bindtap="itemDeleteS" data-index="{{index}}" data-pk="{{item.pk}}">删除</view>
       </view>
     </view>
   </view>
   
+</view>
+
+<view class="page-foot">
+  <view></view>
 </view>

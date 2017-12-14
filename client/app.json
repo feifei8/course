@@ -2,8 +2,8 @@
     "pages": [
         "pages/course/course",
         "pages/my/my",
-        "pages/chat/chat",
-        "pages/subject/subject"
+        "pages/subject/subject",
+        "pages/course/add"
         
     ],
     "window": {
@@ -23,13 +23,6 @@
           "iconPath": "images/icon_tab_course1.png",
           "selectedIconPath": "images/icon_tab_course.png",
           "text": "课程表"
-        },
-       
-        {
-          "pagePath": "pages/chat/chat",
-          "iconPath": "images/icon_tab_homework1.png",
-          "selectedIconPath": "images/icon_tab_homework.png",
-          "text": "作业"
         },
         {
           "pagePath": "pages/my/my",

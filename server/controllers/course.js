@@ -81,6 +81,133 @@ async function getCourseByPK(ctx, next) {
     ctx.state.code = -1
   }
 }
+/*
+*增加课程
+*/
+async function addCourse(ctx, next) {
+  req = ctx.request.body
+  console.log(req)
+  if (ctx.state.$wxInfo.loginState === 1) {
+    var userinfo = ctx.state.$wxInfo.userinfo
+    var openId = userinfo.openId
+    var req = ctx.request.body
+    if (req) {
+      var pk_course = req.pk_course
+      var course_title = req.course_title
+      var school = req.school
+      var course_desc = JSON.stringify(req.course_desc)
+      var listData = req.listData
+      var insertArray = []
+      var subjects = req.subjects
+
+      for (var i = 0; i < listData.length; i++) {
+        var monday = listData[i].monday
+
+        var insertJson = {
+          pk: chance.guid(),
+          lesson_id: listData[i].lesson_id,
+          pk_subject: monday ? monday.pk_subject : '',
+          lesson_start: listData[i].lesson_start,
+          lesson_end: listData[i].lesson_end,
+          week: 'monday',
+          pk_course: pk_course
+        }
+        insertArray.push(insertJson)
+
+        var tuesday = listData[i].tuesday
+        var insertJson = {
+          pk: chance.guid(),
+          lesson_id: listData[i].lesson_id,
+          pk_subject: tuesday ? tuesday.pk_subject : '',
+          lesson_start: listData[i].lesson_start,
+          lesson_end: listData[i].lesson_end,
+          week: 'tuesday',
+          pk_course: pk_course
+        }
+        insertArray.push(insertJson)
+
+        var wednesday = listData[i].wednesday
+        var insertJson = {
+          pk: chance.guid(),
+          lesson_id: listData[i].lesson_id,
+          pk_subject: wednesday ? wednesday.pk_subject : '',
+          lesson_start: listData[i].lesson_start,
+          lesson_end: listData[i].lesson_end,
+          week: 'wednesday',
+          pk_course: pk_course
+        }
+        insertArray.push(insertJson)
+
+        var thursday = listData[i].thursday
+        var insertJson = {
+          pk: chance.guid(),
+          lesson_id: listData[i].lesson_id,
+          pk_subject: thursday ? thursday.pk_subject : '',
+          lesson_start: listData[i].lesson_start,
+          lesson_end: listData[i].lesson_end,
+          week: 'thursday',
+          pk_course: pk_course
+        }
+        insertArray.push(insertJson)
+
+        var friday = listData[i].friday
+
+        var insertJson = {
+          pk: chance.guid(),
+          lesson_id: listData[i].lesson_id,
+          pk_subject: friday ? friday.pk_subject : '',
+          lesson_start: listData[i].lesson_start,
+          lesson_end: listData[i].lesson_end,
+          week: 'friday',
+          pk_course: pk_course
+        }
+        insertArray.push(insertJson)
+
+      }
+
+      for (var j = 0; j < subjects.length; j++) {
+        subjects[j].pk = chance.guid(),
+          subjects[j].subject_desc = JSON.stringify(subjects[j].subject_desc)
+        subjects[j].pk_course = pk_course
+      }
+      await mysql.transaction(function (trx) {
+        mysql('course')
+          .insert({
+            pk: pk_course,
+            openId: openId,
+            course_title: course_title,
+            school: school,
+            course_desc: course_desc
+          })
+          .transacting(trx)
+          .then(function () {
+            return mysql('lesson')
+              .insert(insertArray)
+              .transacting(trx)
+              .then(function () {
+                return mysql("subject")
+                  .insert(subjects)
+                  .transacting(trx)
+
+              })
+          })
+          .then(trx.commit)
+          .catch(trx.rollback)
+
+      })
+        .then(function () {
+          ctx.state.code = 200
+          ctx.state.data = "Transaction complete"
+
+        })
+        .catch(function (err) {
+          ctx.state.code = 900
+          ctx.state.data = err
+          console.error(err)
+        })
+    }
+  }
+}
 
 /*
 *保存课程
@@ -101,77 +228,65 @@ async function saveCourse(ctx, next) {
 
       for (var i = 0; i < listData.length; i++) {
         var monday = listData[i].monday
-        if (monday) {
-          var insertJson = {
-            pk: chance.guid(),
-            lesson_id: listData[i].lesson_id,
-            pk_subject: monday.pk_subject,
-            lesson_start: listData[i].lesson_start,
-            lesson_end: listData[i].lesson_end,
-            week: 'monday',
-            pk_course: pk_course
-          }
-          insertArray.push(insertJson)
-
+        var insertJson = {
+          pk: chance.guid(),
+          lesson_id: listData[i].lesson_id,
+          pk_subject: monday ? monday.pk_subject : '',
+          lesson_start: listData[i].lesson_start,
+          lesson_end: listData[i].lesson_end,
+          week: 'monday',
+          pk_course: pk_course
         }
-
+        insertArray.push(insertJson)
 
         var tuesday = listData[i].tuesday
-        if (tuesday) {
-          var insertJson = {
-            pk: chance.guid(),
-            lesson_id: listData[i].lesson_id,
-            pk_subject: tuesday.pk_subject,
-            lesson_start: listData[i].lesson_start,
-            lesson_end: listData[i].lesson_end,
-            week: 'tuesday',
-            pk_course: pk_course
-          }
-          insertArray.push(insertJson)
-
+        var insertJson = {
+          pk: chance.guid(),
+          lesson_id: listData[i].lesson_id,
+          pk_subject: tuesday ? tuesday.pk_subject : '',
+          lesson_start: listData[i].lesson_start,
+          lesson_end: listData[i].lesson_end,
+          week: 'tuesday',
+          pk_course: pk_course
         }
+        insertArray.push(insertJson)
+
         var wednesday = listData[i].wednesday
-        if (wednesday) {
-          var insertJson = {
-            pk: chance.guid(),
-            lesson_id: listData[i].lesson_id,
-            pk_subject: wednesday.pk_subject,
-            lesson_start: listData[i].lesson_start,
-            lesson_end: listData[i].lesson_end,
-            week: 'wednesday',
-            pk_course: pk_course
-          }
-          insertArray.push(insertJson)
-
+        var insertJson = {
+          pk: chance.guid(),
+          lesson_id: listData[i].lesson_id,
+          pk_subject: wednesday ? wednesday.pk_subject : '',
+          lesson_start: listData[i].lesson_start,
+          lesson_end: listData[i].lesson_end,
+          week: 'wednesday',
+          pk_course: pk_course
         }
+        insertArray.push(insertJson)
+
         var thursday = listData[i].thursday
-        if (thursday) {
-          var insertJson = {
-            pk: chance.guid(),
-            lesson_id: listData[i].lesson_id,
-            pk_subject: thursday.pk_subject,
-            lesson_start: listData[i].lesson_start,
-            lesson_end: listData[i].lesson_end,
-            week: 'thursday',
-            pk_course: pk_course
-          }
-          insertArray.push(insertJson)
-
+        var insertJson = {
+          pk: chance.guid(),
+          lesson_id: listData[i].lesson_id,
+          pk_subject: thursday ? thursday.pk_subject : '',
+          lesson_start: listData[i].lesson_start,
+          lesson_end: listData[i].lesson_end,
+          week: 'thursday',
+          pk_course: pk_course
         }
+        insertArray.push(insertJson)
+
         var friday = listData[i].friday
-        if (friday) {
-          var insertJson = {
-            pk: chance.guid(),
-            lesson_id: listData[i].lesson_id,
-            pk_subject: friday.pk_subject,
-            lesson_start: listData[i].lesson_start,
-            lesson_end: listData[i].lesson_end,
-            week: 'friday',
-            pk_course: pk_course
-          }
-          insertArray.push(insertJson)
-
+        var insertJson = {
+          pk: chance.guid(),
+          lesson_id: listData[i].lesson_id,
+          pk_subject: friday ? friday.pk_subject : '',
+          lesson_start: listData[i].lesson_start,
+          lesson_end: listData[i].lesson_end,
+          week: 'friday',
+          pk_course: pk_course
         }
+        insertArray.push(insertJson)
+
 
       }
 
@@ -260,23 +375,23 @@ async function addUserCourseOther(ctx, next) {
     var openId = userinfo.openId
     req = ctx.request.body
     if (req) {
-          await mysql("user_course").insert([{
-            pk_course: req.pk_course,
-            openId: openId
-          }]
-          )
-            .then(function () {
-              ctx.state.code = 200
-              ctx.state.data = "插入成功"
-            })
-            .catch(function (err) {
-              ctx.state.code = 900
-              ctx.state.data = err.code
-            })
+      await mysql("user_course").insert([{
+        pk_course: req.pk_course,
+        openId: openId
+      }]
+      )
+        .then(function () {
+          ctx.state.code = 200
+          ctx.state.data = "插入成功"
+        })
+        .catch(function (err) {
+          ctx.state.code = 900
+          ctx.state.data = err.code
+        })
 
-        }
     }
-    else {
+  }
+  else {
     ctx.state.code = -1
   }
 }
@@ -288,7 +403,7 @@ async function copyCourse(ctx, next) {
     req = ctx.request.body
     if (req) {
       var pk_course = req.pk_course
-      var courseNewReturn=''
+      var courseNewReturn = ''
       await mysql.transaction(function (trx) {
         mysql("course").select("*").where("pk", pk_course)
           .then(function (res) {
@@ -390,7 +505,7 @@ async function myCourse(ctx, next) {
   if (ctx.state.$wxInfo.loginState === 1) {
     var userinfo = ctx.state.$wxInfo.userinfo
     var openId = userinfo.openId
-    await mysql("course").select("*").where({ "openId": openId, "scope": "private" })
+    await mysql("course").select("*").where({ "openId": openId, "scope": "private" }).orderBy('create_date', 'desc')
       .then(function (res) {
         ctx.state.code = 200
         ctx.state.data = res
@@ -406,7 +521,7 @@ async function shareCourse(ctx, next) {
   if (ctx.state.$wxInfo.loginState === 1) {
     var userinfo = ctx.state.$wxInfo.userinfo
     var openId = userinfo.openId
-    await mysql.select("*").from("course").leftJoin("user_course", "course.pk", "user_course.pk_course").where({ "user_course.openId": openId })
+    await mysql.select("*").from("course").leftJoin("user_course", "course.pk", "user_course.pk_course").where({ "user_course.openId": openId }).orderBy('course.create_date', 'desc')
       .then(function (res) {
         ctx.state.code = 200
         ctx.state.data = res
@@ -450,7 +565,7 @@ async function courseDefault(ctx, next) {
   if (ctx.state.$wxInfo.loginState === 1) {
     var userinfo = ctx.state.$wxInfo.userinfo
     var openId = userinfo.openId
-    await mysql.select("*").from("user_log").where({ "openId": openId }).limit(1).orderBy('create_date', 'desc')
+    await mysql.select("*").from("user_log").whereRaw("pk_course in (SELECT pk FROM course where openId= '" + openId + "' UNION SELECT pk_course FROM user_course where openId= '" + openId+"')").limit(1).orderBy('user_log.create_date', 'desc')
       .then(function (res) {
         ctx.state.code = 200
         if (res.length > 0) {
@@ -491,7 +606,7 @@ async function addUserLog(ctx, next) {
 
 }
 //删除我的课表
-async function delCourse(ctx,next){
+async function delCourse(ctx, next) {
   if (ctx.state.$wxInfo.loginState === 1) {
     var userinfo = ctx.state.$wxInfo.userinfo
     var openId = userinfo.openId
@@ -519,7 +634,7 @@ async function delShareCourse(ctx, next) {
     req = ctx.request.body
     if (req.pk_course) {
       var pk_course = req.pk_course
-      await mysql("user_course").where({ 'pk_course': pk_course, 'openId': openId}).del()
+      await mysql("user_course").where({ 'pk_course': pk_course, 'openId': openId }).del()
         .then(function (res) {
           ctx.state.code = 200
           ctx.state.data = '删除成功'
@@ -546,5 +661,6 @@ module.exports = {
   addUserLog,
   addUserCourseOther,
   delCourse,
-  delShareCourse
+  delShareCourse,
+  addCourse
 }

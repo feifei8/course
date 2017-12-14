@@ -536,8 +536,16 @@ Page({
     w4: '',
     w5: ''
   },
-  onShow: function () {
+  onload:function(res){
+    console.log("course onload ...")
+    console.log(res)
 
+  },
+  onShow: function () {
+    
+    console.log("course onshow ...")
+    console.log(app.globalData.pk_course)
+    var that=this
     var currentweek = this.data.currentweek
     switch (currentweek) {
       case "星期一":
@@ -571,14 +579,19 @@ Page({
         })
 
     }
-    var that = this
+    wx.showLoading({
+      title: '加载中',
+    })
+    
     var courseTemplate = wx.getStorageSync('course')
     if (app.globalData.pk_course && courseTemplate == '') {
+      console.log("11")
       that.courseGetBypk(app.globalData.pk_course)
       that.subjectLidtBypk(app.globalData.pk_course)
       that.isShareCourse(app.globalData.pk_course)
     }
     if (courseTemplate) {
+      console.log("22")
       if (courseTemplate.listData && courseTemplate.listData.length > 0) {
         that.setData({
           courseTemplate: courseTemplate
@@ -588,10 +601,8 @@ Page({
         that.isShareCourse(app.globalData.pk_course)
       }
     }
-    if (app.globalData.pk_course = '' && courseTemplate == '') {
-      wx.showLoading({
-        title: '加载中',
-      })
+    if (app.globalData.pk_course == "" && courseTemplate == "") {
+      console.log("33")
       qcloud.request({
         url: config.service.courseDefault,
         method: 'get',
@@ -603,9 +614,10 @@ Page({
                 url: config.service.courseCopy,
                 method: 'post',
                 data: {
-                  pk_course: app.globalData.pk_course
+                  pk_course: 'c1aaa652-aa77-59e8-858d-735a4308b12a'
                 },
                 success(copyres) {
+                  wx.hideLoading()
                   if (copyres.data.code === 200) {
                     that.courseGetBypk(copyres.data.data.pk)
                     that.subjectLidtBypk(copyres.data.data.pk)
@@ -632,6 +644,23 @@ Page({
       })
     }
 },
+  //跳转设置页面授权
+  openSetting: function () {
+    var that = this
+    if (wx.openSetting) {
+      wx.openSetting({
+        success: function (res) {
+          //尝试再次登录
+          //that.login()
+        }
+      })
+    } else {
+      wx.showModal({
+        title: '授权提示',
+        content: '小程序需要您的微信授权才能使用哦~ 错过授权页面的处理方法：删除小程序->重新搜索进入->点击授权按钮'
+      })
+    }
+  },
   //根据pk获取课程
   courseGetBypk: function (pk_course) {
     var that = this
@@ -727,10 +756,15 @@ Page({
     wx.showShareMenu({
       withShareTicket: true
     })
+    var course_title = this.data.courseTemplate.course_title
+    var pk_course = this.data.courseTemplate.pk_course
     return {
-      title: '城关小学课程表',
-      path: 'pages/course/course?pk_cource=' + app.globalData.pk_course,
+      title: course_title,
+      path: 'pages/course/course?pk_course=' + pk_course,
       success: function (res) {
+        console.log("share sucess...")
+        console.log(course_title)
+        console.log(pk_course)
         console.log(res)
         wx.getShareInfo({
           shareTicket: res.shareTickets,
@@ -885,7 +919,7 @@ Page({
     var subjects1 = this.data.subjects
     for (var i = 0; i < subjects1.length; i++) {
       if (pk == subjects1[i].pk && subjects1[i].subject_desc.bordercss == '') {
-        subjects1[i].subject_desc.bordercss = 'border:2rpx solid #333;opacity:0.6;'
+        subjects1[i].subject_desc.bordercss = 'border-color: #333;opacity:0.6;'
         this.setData({
           chooseSubject: subject
         })

@@ -19,7 +19,7 @@ Page({
           {
             id: 2,
             text: '2',
-            color: "#0099CC",
+            color: "#20A0FF",
             choosedcss: ''
           },
           {

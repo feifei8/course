@@ -57,6 +57,9 @@ Page({
     })
   },
   onShow: function () {
+    wx.showLoading({
+      title: '加载中',
+    })
     var that = this
     qcloud.request({
       url: config.service.myCourse,
@@ -76,7 +79,7 @@ Page({
             url: config.service.shareCourse,
             method: 'get',
             success(result) {
-              console.log(result)
+              wx.hideLoading()
               if (result.data.code === 200) {
                 var sharecourse = result.data.data
                 for (var i = 0; i < sharecourse.length; i++) {
@@ -126,6 +129,7 @@ Page({
   },
   itemDelete: function (e) {  // itemDelete
     let mycourse = App.Touches.deleteItem(e, this.data.mycourse)
+
     mycourse && this.setData({ mycourse })
     var para = e.currentTarget.dataset
     qcloud.request({
@@ -137,6 +141,9 @@ Page({
       },
       success(result) {
         if (result.data.code === 200) {
+          wx.setStorageSync('course', '')
+          App.globalData.pk_course = ''
+         
         }
       }
 
@@ -153,7 +160,7 @@ Page({
 
   },
   stouchE: function (e) {  // touchend
-    const width = 150  // 定义操作列表宽度
+    const width = 300  // 定义操作列表宽度
     let sharecourse = App.Touches.touchE(e, this.data.sharecourse, this.data.startX, width)
     sharecourse && this.setData({ sharecourse })
   },
@@ -176,8 +183,31 @@ Page({
     })
 
   },
-  getTimeStamp:function (isostr) {
-    var parts = isostr.match(/\d+/g);
-    return new Date(parts[0] + '-' + parts[1] + '-' + parts[2] + ' ' + parts[3] + ':' + parts[4] + ':' + parts[5]).getTime();
+  copyShareCourse :function(e){
+    var that=this
+    var para = e.currentTarget.dataset
+    qcloud.request({
+      // 要请求的地址
+      url: config.service.courseCopy,
+      method: 'post',
+      data: {
+        pk_course: para.pk
+      },
+      success(copyres) {
+        wx.hideLoading()
+        if (copyres.data.code === 200) {
+          that.onShow()
+        }
+      },
+      catch(e) {
+        console.log(e)
+      }
+    });
+
+  },
+  redirectAdd:function(){
+    wx.redirectTo({
+      url: '/pages/course/add'
+    })
   }
 })

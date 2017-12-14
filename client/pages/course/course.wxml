@@ -1,3 +1,4 @@
+
 <view class="head">
   <view wx:if="{{!isShareCourse}}">
     <view class="add" bindtap="edit" wx:if="{{editVisible}}">
@@ -64,11 +65,12 @@
     </view>
   </view>
 </view>
+<view class="memberList"></view>
 <view class="subject" wx:if="{{editArea}}">
   <view bindtap="courseSave" class="subject-add">
     <image src='/images/confirm.png' style='width:60rpx;height:60rpx'></image>
   </view>
-  <scroll-view scroll-x="true" style='width:600rpx;'>
+  <scroll-view scroll-x="true" style='width: 600rpx; padding: 4rpx; 0'>
     <block wx:for="{{subjects}}" wx:key="{{pk}}">
       <button type='primary' data-item="{{item}}" size="mini" style='background-color:{{item.subject_desc.color}};width:150rpx;{{item.subject_desc.bordercss}}' hover-class="button-hover" class="button" bindtap='chooseSubject' bind:longpress="navigateToSubject">{{item.subject_title}}</button>
     </block>
