@@ -4,7 +4,6 @@
 
 // 此处主机域名修改成腾讯云解决方案分配的域名
 //var host = 'https://tuimy0x9.qcloud.la';
-var host = 'https://981211159.1yuelongmen.com';
 
 var config = {
 
